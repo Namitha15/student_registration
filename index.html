@@ -105,29 +105,34 @@
         <div id="msg"></div>
     </div>
 
-    <script>
-        document.getElementById('regForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const data = new FormData(e.target);
-            const msg = document.getElementById('msg');
-            msg.innerHTML = "Submitting...";
+<script>
+    document.getElementById('regForm').onsubmit = async (e) => {
+        e.preventDefault();
+        
+        // ← THIS IS THE ONLY CHANGE: use URLSearchParams instead of FormData
+        const form = e.target;
+        const body = new URLSearchParams(new FormData(form)).toString();
 
-            try {
-                const res = await fetch('/api/register', {
-                    method: 'POST',
-                    body: data
-                });
-                if (res.ok) {
-                    msg.innerHTML = '<span style="color:green;">Registration Successful! Thank you!</span>';
-                    e.target.reset();
-                } else {
-                    msg.innerHTML = '<span style="color:red;">Server error. Try again.</span>';
-                }
-            } catch (err) {
-                msg.innerHTML = '<span style="color:red;">Check internet connection!</span>';
+        const msg = document.getElementById('msg');
+        msg.innerHTML = "Submitting...";
+
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body
+            });
+            if (res.ok) {
+                msg.innerHTML = '<span style="color:green;">Registration Successful! Thank you!</span>';
+                form.reset();
+            } else {
+                msg.innerHTML = '<span style="color:red;">Error. Try again.</span>';
             }
-        };
-    </script>
+        } catch (err) {
+            msg.innerHTML = '<span style="color:red;">No internet!</span>';
+        }
+    };
+</script>
 </body>
 </html>
             
