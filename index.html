@@ -5,55 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin:0; padding:0; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800&q=80') center/cover no-repeat;
-            opacity: 0.15;
-            z-index: -1;
         }
         .container {
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.97);
             padding: 40px 35px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             width: 100%;
             max-width: 420px;
-            backdrop-filter: blur(10px);
         }
         h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
             background: linear-gradient(to right, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: 30px;
+            margin-bottom: 35px;
         }
         label {
             display: block;
             margin: 20px 0 8px;
             color: #555;
             font-weight: 600;
+            font-size: 15px;
         }
         input {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border: 2px solid #e8e8e8;
             border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s;
@@ -61,12 +49,12 @@
         input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102,126,234,0.2);
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.15);
         }
         button {
             width: 100%;
             padding: 16px;
-            margin-top: 25px;
+            margin-top: 30px;
             background: linear-gradient(to right, #667eea, #764ba2);
             color: white;
             border: none;
@@ -74,10 +62,18 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
-        button:hover { transform: translateY(-2px); }
-        #msg { margin-top: 20px; text-align: center; font-weight: bold; font-size: 17px; }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.4);
+        }
+        #msg {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -87,25 +83,25 @@
         <form id="regForm">
             <label>Full Name</label>
             <input type="text" name="fullname" required>
-            
+
             <label>Email Address</label>
             <input type="email" name="email" required>
-            
+
             <label>Age</label>
             <input type="number" name="age" min="10" max="100" required>
-            
+
             <label>Phone Number</label>
             <input type="tel" name="phone" required>
-            
+
             <label>Course Name</label>
             <input type="text" name="course" required>
-            
+
             <label>Create Password</label>
             <input type="password" name="password" required>
-            
+
             <button type="submit">Register Now</button>
         </form>
-        
+
         <div id="msg"></div>
     </div>
 
@@ -125,12 +121,17 @@
                     msg.innerHTML = '<span style="color:green;">Registration Successful! Thank you!</span>';
                     e.target.reset();
                 } else {
-                    msg.innerHTML = '<span style="color:red;">Server Error! Try again.</span>';
+                    msg.innerHTML = '<span style="color:red;">Server error. Try again.</span>';
                 }
             } catch (err) {
-                msg.innerHTML = '<span style="color:red;">No internet connection!</span>';
+                msg.innerHTML = '<span style="color:red;">Check internet connection!</span>';
             }
         };
     </script>
 </body>
 </html>
+            
+        
+        
+
+
