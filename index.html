@@ -2,98 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Student Registration</title>
-
     <style>
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            height: 100vh;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: gradientBG 8s ease infinite;
-            background: linear-gradient(-45deg, #ff6a88, #ff99ac, #4e54c8, #8f94fb);
-            background-size: 400% 400%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         .container {
-            background: rgba(255, 255, 255, 0.9);
-            width: 90%;
+            background: white;
+            padding: 40px 35px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 100%;
             max-width: 400px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-
         h2 {
             text-align: center;
+            margin-bottom: 30px;
             color: #333;
-            margin-bottom: 20px;
         }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-
         input {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
+            padding: 14px;
+            margin: 10px 0 20px;
             border-radius: 8px;
-            font-size: 15px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #4e54c8;
-            border: none;
-            border-radius: 8px;
-            color: white;
+            border: 1px solid #ddd;
             font-size: 16px;
         }
-
-        button:hover {
-            background: #33349b;
+        input:focus {
+            outline: none;
+            border-color: #2575fc;
+            box-shadow: 0 0 0 3px rgba(37,117,252,0.2);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
             cursor: pointer;
+        }
+        button:hover { background: #1a5bb8; }
+        #msg {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        @media (max-width: 480px) {
+            .container { padding: 30px 25px; }
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
         <h2>Student Registration</h2>
-
-        <label>Name</label>
-        <input type="text" placeholder="Enter your name">
-
-        <label>Age</label>
-        <input type="number" placeholder="Enter your age">
-
-        <label>Email</label>
-        <input type="email" placeholder="Enter your email">
-
-        <label>Phone</label>
-        <input type="text" placeholder="Enter phone number">
-
-        <label>Course</label>
-        <input type="text" placeholder="Enter course name">
-
-        <button>Register</button>
+        
+        <form id="regForm">
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="number" name="age" placeholder="Age" min="10" max="100" required>
+            <input type="tel" name="phone" placeholder="Phone Number" required>
+            <input type="text" name="course" placeholder="Course Name" required>
+            <input type="password" name="password" placeholder="Create Password" required>
+            
+            <button type="submit">Register Now</button>
+        </form>
+        
+        <div id="msg"></div>
     </div>
 
+    <script>
+        document.getElementById('regForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+            
+            const msg = document.getElementById('msg');
+            msg.innerHTML = "Submitting...";
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    body: data
+                });
+                if (res.ok) {
+                    msg.innerHTML = '<span style="color:green;">Registration Successful!</span>';
+                    form.reset();
+                } else {
+                    msg.innerHTML = '<span style="color:red;">Error! Try again.</span>';
+                }
+            } catch (err) {
+                msg.innerHTML = '<span style="color:red;">Network error!</span>';
+            }
+        };
+    </script>
 </body>
 </html>
