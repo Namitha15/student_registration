@@ -1,5 +1,3 @@
-// api/register.js   ← make sure the file name is exactly this (lowercase)
-
 import { Buffer } from 'node:buffer';
 
 export default async function handler(req, res) {
@@ -8,42 +6,34 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Properly read form-data from Vercel
         const buffers = [];
         for await (const chunk of req) {
             buffers.push(chunk);
         }
         const body = Buffer.concat(buffers).toString();
-
-        // Parse the raw form-data manually
         const params = new URLSearchParams(body);
-        const fullname = params.get('fullname');
-        const email = params.get('email');
-        const age = params.get('age');
-        const phone = params.get('phone');
-        const course = params.get('course');
-        const password = params.get('password');
 
-        // Log the data (you will see this in Vercel Logs)
-        console.log('New Registration:', {
-            fullname,
-            email,
-            age,
-            phone,
-            course,
+        const data = {
+            fullname: params.get('fullname') || 'N/A',
+            email: params.get('email') || 'N/A',
+            age: params.get('age') || 'N/A',
+            phone: params.get('phone') || 'N/A',
+            course: params.get('course') || 'N/A',
+            password: params.get('password') || 'hidden',
             timestamp: new Date().toISOString()
-        });
+        };
 
-        // Success response
+        console.log('New Registration:', data);
+
         res.status(200).send('Success');
     } catch (err) {
         console.error('Error:', err);
-        res.status(500).send('Server Error');
+        res.status(500).send('Error');
     }
 }
 
 export const config = {
     api: {
-        bodyParser: false,   // THIS IS VERY IMPORTANT
-    },
+        bodyParser: false   // ← THIS LINE WAS MISSING BEFORE!
+    }
 };
