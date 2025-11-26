@@ -2,65 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
     <style>
         * { box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800&q=80') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: -1;
         }
         .container {
-            background: white;
+            background: rgba(255,255,255,0.95);
             padding: 40px 35px;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            backdrop-filter: blur(10px);
         }
         h2 {
             text-align: center;
-            margin-bottom: 30px;
             color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        label {
+            display: block;
+            margin: 20px 0 8px;
+            color: #555;
+            font-weight: 600;
         }
         input {
             width: 100%;
             padding: 14px;
-            margin: 10px 0 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 16px;
+            transition: all 0.3s;
         }
         input:focus {
             outline: none;
-            border-color: #2575fc;
-            box-shadow: 0 0 0 3px rgba(37,117,252,0.2);
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.2);
         }
         button {
             width: 100%;
-            padding: 15px;
-            background: #2575fc;
+            padding: 16px;
+            margin-top: 25px;
+            background: linear-gradient(to right, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 18px;
-            cursor: pointer;
-        }
-        button:hover { background: #1a5bb8; }
-        #msg {
-            margin-top: 15px;
-            text-align: center;
             font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
-        @media (max-width: 480px) {
-            .container { padding: 30px 25px; }
-        }
+        button:hover { transform: translateY(-2px); }
+        #msg { margin-top: 20px; text-align: center; font-weight: bold; font-size: 17px; }
     </style>
 </head>
 <body>
@@ -68,12 +85,23 @@
         <h2>Student Registration</h2>
         
         <form id="regForm">
-            <input type="text" name="fullname" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="number" name="age" placeholder="Age" min="10" max="100" required>
-            <input type="tel" name="phone" placeholder="Phone Number" required>
-            <input type="text" name="course" placeholder="Course Name" required>
-            <input type="password" name="password" placeholder="Create Password" required>
+            <label>Full Name</label>
+            <input type="text" name="fullname" required>
+            
+            <label>Email Address</label>
+            <input type="email" name="email" required>
+            
+            <label>Age</label>
+            <input type="number" name="age" min="10" max="100" required>
+            
+            <label>Phone Number</label>
+            <input type="tel" name="phone" required>
+            
+            <label>Course Name</label>
+            <input type="text" name="course" required>
+            
+            <label>Create Password</label>
+            <input type="password" name="password" required>
             
             <button type="submit">Register Now</button>
         </form>
@@ -84,9 +112,7 @@
     <script>
         document.getElementById('regForm').onsubmit = async (e) => {
             e.preventDefault();
-            const form = e.target;
-            const data = new FormData(form);
-            
+            const data = new FormData(e.target);
             const msg = document.getElementById('msg');
             msg.innerHTML = "Submitting...";
 
@@ -96,13 +122,13 @@
                     body: data
                 });
                 if (res.ok) {
-                    msg.innerHTML = '<span style="color:green;">Registration Successful!</span>';
-                    form.reset();
+                    msg.innerHTML = '<span style="color:green;">Registration Successful! Thank you!</span>';
+                    e.target.reset();
                 } else {
-                    msg.innerHTML = '<span style="color:red;">Error! Try again.</span>';
+                    msg.innerHTML = '<span style="color:red;">Server Error! Try again.</span>';
                 }
             } catch (err) {
-                msg.innerHTML = '<span style="color:red;">Network error!</span>';
+                msg.innerHTML = '<span style="color:red;">No internet connection!</span>';
             }
         };
     </script>
